@@ -83,7 +83,7 @@ export default function Home() {
 
           const setCompleted = async (completed: Boolean) =>
             // setTask(await taskRepo.save({ ...task, completed }));
-            setTask(await taskRepo.save({ ...task, completed }));
+            setTask(await taskRepo.save({ ...task }));
 
           const setTitle = (title: string) => setTask({ ...task, title });
 
