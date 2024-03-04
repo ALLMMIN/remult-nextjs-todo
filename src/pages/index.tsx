@@ -81,9 +81,9 @@ export default function Home() {
           const setTask = (value: Task) =>
             setTasks(tasks.map((t) => (t === task ? value : t)));
 
-          const setCompleted = async (completed: Boolean) =>
+          const setCompleted = async (completed?: boolean | undefined) =>
             // setTask(await taskRepo.save({ ...task, completed }));
-            setTask(await taskRepo.save({ ...task }));
+            setTask(await taskRepo.save({ ...task, completed }));
 
           const setTitle = (title: string) => setTask({ ...task, title });
 
