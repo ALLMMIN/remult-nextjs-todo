@@ -6,6 +6,8 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true, // add this
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,

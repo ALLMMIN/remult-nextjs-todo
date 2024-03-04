@@ -1,118 +1,175 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
+import React, { FormEvent, useEffect, useState } from "react";
+import { Task } from "./shared/Task";
+import { remult } from "remult";
+import { title } from "process";
+import { TasksController } from "./shared/TasksController";
+import { signIn, signOut, useSession } from "next-auth/react";
 
-const inter = Inter({ subsets: ["latin"] });
+const taskRepo = remult.repo(Task);
+
+function fetchTasks() {
+  return taskRepo.find({
+    // limit: 2, (กำหนดให้แสดงแค่ / รายการ )
+    orderBy: {
+      completed: "asc",
+    },
+    where: {
+      completed: undefined,
+    },
+  });
+}
 
 export default function Home() {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [newTaskTitle, setNewTaskTitle] = useState("");
+
+  const addTask = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const newTask = await taskRepo.insert({ title: newTaskTitle });
+      setTasks([...tasks, newTask]);
+      setNewTaskTitle("");
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
+  const setAllCompleted = async (completed: boolean) => {
+    await TasksController.setAllCompleted(completed);
+    fetchTasks().then(setTasks);
+  };
+
+  const session = useSession();
+
+  useEffect(() => {
+    if (session.status === "unauthenticated") signIn();
+    else fetchTasks().then(setTasks);
+  }, [session]);
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="bg-gray-50 h-screen flex items-center flex-col justify-center test-lg">
+      <h1 className="text-red-500 text-6xl italic">Toddos {tasks.length}</h1>
+      <main className="bg-white border rounded-lg shadow-lg  m-5 w-screen max-w-md">
+        <div className="flex justify-between px-6 p-2 border-b">
+          Hello {session.data?.user?.name}
+          <button onClick={() => signOut()}>Sing out</button>
         </div>
-      </div>
+        <form onSubmit={addTask} className="border-b-2 px-6 p-2 gap-2 flex">
+          <input
+            className="w-full"
+            value={newTaskTitle}
+            onChange={(e) => setNewTaskTitle(e.target.value)}
+            placeholder="what needs to be done?"
+          />
+          <button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
+          </button>
+        </form>
+        {tasks.map((task) => {
+          const setTask = (value: Task) =>
+            setTasks(tasks.map((t) => (t === task ? value : t)));
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+          const setCompleted = async (completed: Boolean) =>
+            // setTask(await taskRepo.save({ ...task, completed }));
+            setTask(await taskRepo.save({ ...task, completed }));
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+          const setTitle = (title: string) => setTask({ ...task, title });
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+          const saveTask = async () => {
+            try {
+              setTask(await taskRepo.save(task));
+            } catch (err: any) {
+              alert(err.message);
+            }
+          };
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
+          const deleteTask = async () => {
+            try {
+              await taskRepo.delete(task);
+              setTasks(tasks.filter((t) => t !== task));
+            } catch (err: any) {
+              alert(err.message);
+            }
+          };
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+          return (
+            <div
+              key={task.id}
+              className="border-b px-6 gap-2 flex items-center p-2"
+            >
+              <input
+                type="checkbox"
+                checked={task.completed}
+                className="w-6 h-6"
+                onChange={(e) => setCompleted(e.target.checked)}
+              />
+              <input
+                value={task.title}
+                className="w-full"
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <button onClick={saveTask}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m4.5 12.75 6 6 9-13.5"
+                  />
+                </svg>
+              </button>
+              <button onClick={deleteTask}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                  />
+                </svg>
+              </button>
+            </div>
+          );
+        })}
+        <div className="border-t px-6 p-2 gap-4 flex justify-between">
+          <button
+            className="bg-blue-600 text-white px-3 py-1 font-semibold rounded-lg"
+            onClick={() => setAllCompleted(true)}
+          >
+            Set All Completed
+          </button>
+          <button
+            className="bg-blue-600 text-white px-3 py-1 font-semibold rounded-lg"
+            onClick={() => setAllCompleted(false)}
+          >
+            Set All Completed
+          </button>
+        </div>
+      </main>
+    </div>
   );
 }
