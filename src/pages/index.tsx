@@ -51,15 +51,7 @@ const Home = () => {
     <div className="bg-gray-50 h-screen flex items-center flex-col justify-center test-lg">
       <h1 className="text-red-500 text-6xl  ">งานที่ต้องทำ</h1>
       <p className="text-center text-2xl">จำนวน Post : {tasks.length}</p>
-      <main className="bg-white border rounded-lg shadow-lg  m-5 w-screen max-w-5xl px-4 py-4">
-        {/* <div className="flex gap-4 px-6 p-4 border-b">
-          สวัสดี คุณ
-          <p className="text-red-500  ">{session.data?.user?.name}</p>
-          <button onClick={() => signOut()} className="grid justify-items-end ">
-            ออกจากระบบ
-          </button>
-        </div> */}
-
+      <main className="bg-white border rounded-lg shadow-lg  m-5 w-screen max-w-5xl px-4  ">
         <div className="flex gap-4 px-6 p-4 border-b">
           <div className="flex-none w-16   ">สวัสดีคุณ</div>
           <div className="flex-1  ">
@@ -74,26 +66,12 @@ const Home = () => {
 
         <form onSubmit={addTask} className="border-b-2 px-6 p-4 gap-2 flex">
           <input
-            className="w-full"
+            className="w-full  "
             value={newTaskTitle}
             onChange={(e) => setNewTaskTitle(e.target.value)}
             placeholder="กรุณาเพิ่มรายการ"
           />
           <button>
-            {/* <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 4.5v15m7.5-7.5h-15"
-              />
-            </svg> */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -114,9 +92,7 @@ const Home = () => {
           const setTask = (value: Task) =>
             setTasks(tasks.map((t) => (t === task ? value : t)));
 
-          // const setCompleted = async (completed?: boolean | undefined) =>
           const setCompleted = async (completed?: boolean) =>
-            // setTask(await taskRepo.save({ ...task, completed }));
             setTask(await taskRepo.save({ ...task, completed }));
 
           const setTitle = (title: string) => setTask({ ...task, title });
@@ -191,7 +167,7 @@ const Home = () => {
         })}
         <div className="border-t px-6 p-2 gap-4 flex justify-between">
           <button
-            className="bg-blue-600 text-white px-3 py-1 font-semibold rounded-lg flex gap-2"
+            className="bg-blue-600 text-white px-3 py-1 font-semibold text-xs rounded-lg flex gap-2"
             onClick={() => setAllCompleted(true)}
           >
             <svg
@@ -211,7 +187,7 @@ const Home = () => {
             เลือกทุกรายการ
           </button>
           <button
-            className="bg-blue-600 text-white px-3 py-1 font-semibold rounded-lg flex gap-2"
+            className="bg-blue-600 text-white px-3 py-1 font-semibold text-xs rounded-lg flex gap-2"
             onClick={() => setAllCompleted(false)}
           >
             <svg
