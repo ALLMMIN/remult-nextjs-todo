@@ -49,15 +49,30 @@ const Home = () => {
   }, [session]);
   return (
     <div className="bg-gray-50 h-screen flex items-center flex-col justify-center test-lg">
-      <h1 className="text-red-500 text-6xl italic">งานที่ต้องทำ</h1>
-      <p className="text-center text-2xl">จำนวนงาน : {tasks.length}</p>
-      <main className="bg-white border rounded-lg shadow-lg  m-5 w-screen max-w-md">
-        <div className="flex justify-between px-6 p-2 border-b">
+      <h1 className="text-red-500 text-6xl  ">งานที่ต้องทำ</h1>
+      <p className="text-center text-2xl">จำนวน Post : {tasks.length}</p>
+      <main className="bg-white border rounded-lg shadow-lg  m-5 w-screen max-w-5xl px-4 py-4">
+        {/* <div className="flex gap-4 px-6 p-4 border-b">
           สวัสดี คุณ
-          <p className="text-red-500 flex">{session.data?.user?.name}</p>
-          <button onClick={() => signOut()}>ออกจากระบบ</button>
+          <p className="text-red-500  ">{session.data?.user?.name}</p>
+          <button onClick={() => signOut()} className="grid justify-items-end ">
+            ออกจากระบบ
+          </button>
+        </div> */}
+
+        <div className="flex gap-4 px-6 p-4 border-b">
+          <div className="flex-none w-16   ">สวัสดีคุณ</div>
+          <div className="flex-1  ">
+            {" "}
+            <p className="text-red-500  ">{session.data?.user?.name}</p>
+          </div>
+
+          <button onClick={() => signOut()} className="grid justify-items-end ">
+            ออกจากระบบ
+          </button>
         </div>
-        <form onSubmit={addTask} className="border-b-2 px-6 p-2 gap-2 flex">
+
+        <form onSubmit={addTask} className="border-b-2 px-6 p-4 gap-2 flex">
           <input
             className="w-full"
             value={newTaskTitle}
@@ -65,7 +80,7 @@ const Home = () => {
             placeholder="กรุณาเพิ่มรายการ"
           />
           <button>
-            <svg
+            {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -77,6 +92,20 @@ const Home = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg> */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
               />
             </svg>
           </button>
@@ -112,7 +141,7 @@ const Home = () => {
           return (
             <div
               key={task.id}
-              className="border-b px-6 gap-2 flex items-center p-2"
+              className="border-b px-full gap-2 flex items-center p-4"
             >
               <input
                 type="checkbox"
@@ -162,15 +191,43 @@ const Home = () => {
         })}
         <div className="border-t px-6 p-2 gap-4 flex justify-between">
           <button
-            className="bg-blue-600 text-white px-3 py-1 font-semibold rounded-lg"
+            className="bg-blue-600 text-white px-3 py-1 font-semibold rounded-lg flex gap-2"
             onClick={() => setAllCompleted(true)}
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672ZM12 2.25V4.5m5.834.166-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243-1.59-1.59"
+              />
+            </svg>
             เลือกทุกรายการ
           </button>
           <button
-            className="bg-blue-600 text-white px-3 py-1 font-semibold rounded-lg"
+            className="bg-blue-600 text-white px-3 py-1 font-semibold rounded-lg flex gap-2"
             onClick={() => setAllCompleted(false)}
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5"
+              />
+            </svg>
             ยกเลิกรายการ
           </button>
         </div>
