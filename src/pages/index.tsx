@@ -1,8 +1,8 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { Task } from "./shared/Task";
+import Task from "./shared/Task";
 import { remult } from "remult";
-import { title } from "process";
-import { TasksController } from "./shared/TasksController";
+// import { title } from "process";
+import TasksController from "./shared/TasksController";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 const taskRepo = remult.repo(Task);
@@ -19,7 +19,7 @@ function fetchTasks() {
   });
 }
 
-export default function Home() {
+const Home = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState("");
 
@@ -173,4 +173,6 @@ export default function Home() {
       </main>
     </div>
   );
-}
+};
+
+export default Home;
