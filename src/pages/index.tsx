@@ -4,8 +4,8 @@ import { remult } from "remult";
 // import { title } from "process";
 
 import { signIn, signOut, useSession } from "next-auth/react";
-import { Task } from "./shared/Task";
-import { TasksController } from "./shared/TasksController";
+import { Task } from "../shared/Task";
+import { TasksController } from "../shared/TasksController";
 
 const taskRepo = remult.repo(Task);
 
