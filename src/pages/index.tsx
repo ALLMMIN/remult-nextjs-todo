@@ -49,20 +49,20 @@ const Home = () => {
   }, [session]);
   return (
     <div className="bg-gray-50 h-screen flex items-center flex-col justify-center test-lg">
-      <h1 className="text-red-500 text-6xl italic">
-        Crud API NextJs {tasks.length}
-      </h1>
+      <h1 className="text-red-500 text-6xl italic">งานที่ต้องทำ</h1>
+      <p className="text-center text-2xl">จำนวนงาน : {tasks.length}</p>
       <main className="bg-white border rounded-lg shadow-lg  m-5 w-screen max-w-md">
         <div className="flex justify-between px-6 p-2 border-b">
-          Hello {session.data?.user?.name}
-          <button onClick={() => signOut()}>Sing out</button>
+          สวัสดี คุณ
+          <p className="text-red-500 flex">{session.data?.user?.name}</p>
+          <button onClick={() => signOut()}>ออกจากระบบ</button>
         </div>
         <form onSubmit={addTask} className="border-b-2 px-6 p-2 gap-2 flex">
           <input
             className="w-full"
             value={newTaskTitle}
             onChange={(e) => setNewTaskTitle(e.target.value)}
-            placeholder="what needs to be done?"
+            placeholder="กรุณาเพิ่มรายการ"
           />
           <button>
             <svg
@@ -165,13 +165,13 @@ const Home = () => {
             className="bg-blue-600 text-white px-3 py-1 font-semibold rounded-lg"
             onClick={() => setAllCompleted(true)}
           >
-            Set All Completed
+            เลือกทุกรายการ
           </button>
           <button
             className="bg-blue-600 text-white px-3 py-1 font-semibold rounded-lg"
             onClick={() => setAllCompleted(false)}
           >
-            Set All Completed
+            ยกเลิกรายการ
           </button>
         </div>
       </main>
