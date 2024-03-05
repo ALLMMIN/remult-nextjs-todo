@@ -6,7 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { UserInfo } from "remult";
 
 const validUsers: UserInfo[] = [
-  { id: "1", name: "Jane", roles: ["admin"] },
+  { id: "1", name: "Min", roles: ["admin"] },
   { id: "2", name: "Steve" },
 ];
 
