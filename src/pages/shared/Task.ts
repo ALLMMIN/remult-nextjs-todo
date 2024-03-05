@@ -5,7 +5,7 @@ import { Allow, Entity, Fields, Validators } from "remult";
   allowApiInsert: "admin",
   allowApiDelete: "admin",
 })
-class Task {
+export class Task {
   @Fields.autoIncrement()
   id = 0;
   @Fields.string<Task>({
@@ -18,5 +18,3 @@ class Task {
   @Fields.boolean()
   completed = false;
 }
-
-export default Task;

@@ -1,9 +1,11 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import Task from "./shared/Task";
+
 import { remult } from "remult";
 // import { title } from "process";
-import TasksController from "./shared/TasksController";
+
 import { signIn, signOut, useSession } from "next-auth/react";
+import { Task } from "./shared/Task";
+import { TasksController } from "./shared/TasksController";
 
 const taskRepo = remult.repo(Task);
 
@@ -47,7 +49,9 @@ const Home = () => {
   }, [session]);
   return (
     <div className="bg-gray-50 h-screen flex items-center flex-col justify-center test-lg">
-      <h1 className="text-red-500 text-6xl italic">Toddos {tasks.length}</h1>
+      <h1 className="text-red-500 text-6xl italic">
+        Crud API NextJs {tasks.length}
+      </h1>
       <main className="bg-white border rounded-lg shadow-lg  m-5 w-screen max-w-md">
         <div className="flex justify-between px-6 p-2 border-b">
           Hello {session.data?.user?.name}
