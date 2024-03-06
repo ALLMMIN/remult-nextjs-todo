@@ -96,11 +96,9 @@ const Home = () => {
         </form>
 
         <div className="flex gap-1 pl-2 pr-3  border-b text-green-600">
-          <div className="flex-none text-lg">สถานะ</div>
+          <div className="flex-none text-lg">สถานะ / รายการ</div>
           <div className="flex-1  "></div>
-          <div className="grid justify-items-end text-lg">แก้ไข</div>
-          <p>/</p>
-          <div className="grid justify-items-end text-lg">ลบ</div>
+          <div className="grid justify-items-end text-lg">แก้ไข / ลบ</div>
         </div>
 
         {tasks.map((task) => {
