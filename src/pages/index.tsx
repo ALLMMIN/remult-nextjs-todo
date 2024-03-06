@@ -52,22 +52,27 @@ const Home = () => {
       <h1 className="text-red-500 text-6xl  ">งานที่ต้องทำ</h1>
       <p className="text-center text-2xl">จำนวน Post : {tasks.length}</p>
       <main className="bg-white border rounded-lg shadow-lg  m-5 w-screen max-w-5xl px-4  ">
-        <div className="flex gap-4 px-6 p-4 border-b">
-          <div className="flex-none w-16 pt-3">สวัสดีคุณ</div>
+        <div className="flex gap-2 px-2 p-2 border-b">
+          <div className="flex-none w-18 pt-2 text-lg ">สวัสดีคุณ</div>
           <div className="flex-1  ">
-            <p className="text-red-500 pt-3">{session.data?.user?.name}</p>
+            <p className="text-red-500 pt-2 text-lg">
+              {session.data?.user?.name}
+            </p>
           </div>
 
           <button
             onClick={() => signOut()}
-            className="grid justify-items-end bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow"
+            className="grid justify-items-end bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow "
           >
             logout
           </button>
         </div>
-        <form onSubmit={addTask} className="border-b-2 px-6 p-4 gap-2 flex">
+        <form
+          onSubmit={addTask}
+          className="flex gap-2 border-b-2 px-2 p-6 text-lg"
+        >
           <input
-            className="w-full  "
+            className="w-full  text-lg"
             value={newTaskTitle}
             onChange={(e) => setNewTaskTitle(e.target.value)}
             placeholder="กรุณาเพิ่มรายการ"
@@ -91,11 +96,11 @@ const Home = () => {
         </form>
 
         <div className="flex gap-1 pl-2 pr-3  border-b text-green-600">
-          <div className="flex-none">สถานะ</div>
+          <div className="flex-none text-lg">สถานะ</div>
           <div className="flex-1  "></div>
-          <div className="grid justify-items-end">แก้ไข</div>
+          <div className="grid justify-items-end text-lg">แก้ไข</div>
           <p>/</p>
-          <div className="grid justify-items-end">ลบ</div>
+          <div className="grid justify-items-end text-lg">ลบ</div>
         </div>
 
         {tasks.map((task) => {
@@ -127,7 +132,7 @@ const Home = () => {
           return (
             <div
               key={task.id}
-              className="border-b px-full gap-2 flex items-center p-4"
+              className="border-b px-full gap-2 flex items-center p-4 text-lg"
             >
               <input
                 type="checkbox"
@@ -177,7 +182,7 @@ const Home = () => {
         })}
         <div className="border-t px-6 p-2 gap-4 flex justify-between">
           <button
-            className="bg-blue-600 text-white px-4 py-2 font-semibold text-xs rounded-lg flex gap-2 "
+            className="bg-blue-600 text-white px-4 py-2 font-semibold text-xs rounded-lg flex gap-1 "
             onClick={() => setAllCompleted(true)}
           >
             <svg
@@ -197,7 +202,7 @@ const Home = () => {
             Select all
           </button>
           <button
-            className="bg-blue-600 text-white px-4 py-2 font-semibold text-xs rounded-lg flex gap-2"
+            className="bg-blue-600 text-white px-4 py-2 font-semibold text-xs rounded-lg flex gap-1"
             onClick={() => setAllCompleted(false)}
           >
             <svg
