@@ -53,9 +53,9 @@ const Home = () => {
       <p className="text-center text-2xl">จำนวน Post : {tasks.length}</p>
       <main className="bg-white border rounded-lg shadow-lg  m-5 w-screen max-w-5xl px-4  ">
         <div className="flex gap-4 px-6 p-4 border-b">
-          <div className="flex-none w-16 pt-2">สวัสดีคุณ</div>
+          <div className="flex-none w-16 pt-3">สวัสดีคุณ</div>
           <div className="flex-1  ">
-            <p className="text-red-500 pt-2">{session.data?.user?.name}</p>
+            <p className="text-red-500 pt-3">{session.data?.user?.name}</p>
           </div>
 
           <button
